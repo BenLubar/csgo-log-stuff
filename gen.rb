@@ -49,10 +49,10 @@ SQLite3::Database.new 'stats.sqlite3' do |db|
 					# ignore
 				when /^Loading map "((?:[^\\"]|\\[\\"])*)"$/
 					map = $1.split('/').last
-					round = 0
+					round = -1
 				when /^Started map "((?:[^\\"]|\\[\\"])*)" \(CRC "((?:[^\\"]|\\[\\"])*)"\)$/
 					map = $1.split('/').last
-					round = 0
+					round = -1
 				when /^server cvars start$/
 					cvars = true
 				when /^server cvars end$/
@@ -78,7 +78,7 @@ SQLite3::Database.new 'stats.sqlite3' do |db|
 				when /^World triggered "((?:[^\\"]|\\[\\"])*)"$/
 					case event = $1
 					when "Game_Commencing"
-						# ignore
+						round = -1
 					when "Round_Start"
 						bomb_planted = false
 						hostage_reached = false
