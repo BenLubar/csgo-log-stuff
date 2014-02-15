@@ -24,6 +24,8 @@ map = ""
 Dir['logs/*.log'].sort.each do |fn|
 	open fn do |f|
 		cvars = false
+		bomb_planted = false
+		hostage_reached = false
 
 		f.each_line do |l|
 			if l =~ /^L ([0-9]{2})\/([0-9]{2})\/([0-9]{4,}) - ([0-9]{2}):([0-9]{2}):([0-9]{2}): /
@@ -72,7 +74,8 @@ Dir['logs/*.log'].sort.each do |fn|
 				when "Game_Commencing"
 					# ignore
 				when "Round_Start"
-					# ignore
+					bomb_planted = false
+					hostage_reached = false
 				when "Round_End"
 					# ignore
 				else
@@ -102,13 +105,13 @@ Dir['logs/*.log'].sort.each do |fn|
 				when "Dropped_The_Bomb"
 					# ignore
 				when "Planted_The_Bomb"
-					# ignore
+					bomb_planted = true
 				when "Begin_Bomb_Defuse_Without_Kit"
 					# ignore
 				when "Defused_The_Bomb"
 					# ignore
 				when "Touched_A_Hostage"
-					# ignore
+					hostage_reached = true
 				when "Rescued_A_Hostage"
 					# ignore
 				when "round_mvp"
@@ -121,11 +124,22 @@ Dir['logs/*.log'].sort.each do |fn|
 				stats[map] = {
 					ct_win: 0,
 					t_win: 0,
+					hostage_reached: 0,
 					hostage_rescued: 0,
+					bomb_planted: 0,
 					bomb_detonated: 0,
 					bomb_defused: 0,
 					time_ran_out: 0
 				} if stats[map].nil?
+
+				if bomb_planted
+					stats[map][:bomb_planted] += 1
+					bomb_planted = false
+				end
+				if hostage_reached
+					stats[map][:hostage_reached] += 1
+					hostage_reached = false
+				end
 
 				case event = $2
 				when "SFUI_Notice_CTs_Win"
