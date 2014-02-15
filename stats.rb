@@ -3,6 +3,7 @@ require 'json'
 stats = {}
 
 map = ""
+round = 0
 
 Dir['logs/*.log'].sort.each do |fn|
 	open fn do |f|
@@ -30,8 +31,10 @@ Dir['logs/*.log'].sort.each do |fn|
 				# ignore
 			when /^Loading map "((?:[^\\"]|\\[\\"])*)"$/
 				map = $1.split('/').last
+				round = 0
 			when /^Started map "((?:[^\\"]|\\[\\"])*)" \(CRC "((?:[^\\"]|\\[\\"])*)"\)$/
 				map = $1.split('/').last
+				round = 0
 			when /^server cvars start$/
 				cvars = true
 			when /^server cvars end$/
@@ -61,6 +64,7 @@ Dir['logs/*.log'].sort.each do |fn|
 				when "Round_Start"
 					bomb_planted = false
 					hostage_reached = false
+					round += 1
 				when "Round_End"
 					# ignore
 				else
@@ -107,6 +111,8 @@ Dir['logs/*.log'].sort.each do |fn|
 				end
 			when /^Team "((?:[^\\"]|\\[\\"])*)" triggered "((?:[^\\"]|\\[\\"])*)" \(CT "((?:[^\\"]|\\[\\"])*)"\) \(T "((?:[^\\"]|\\[\\"])*)"\)$/
 				stats[map] = {
+					t_wins: 0,
+					ct_wins: 0,
 					all_ct_killed: 0,
 					all_t_killed: 0,
 					hostage_reached: 0,
@@ -129,18 +135,25 @@ Dir['logs/*.log'].sort.each do |fn|
 				case event = $2
 				when "SFUI_Notice_CTs_Win"
 					stats[map][:all_t_killed] += 1
+					stats[map][:ct_wins] += 1
 				when "SFUI_Notice_Terrorists_Win"
 					stats[map][:all_ct_killed] += 1
+					stats[map][:t_wins] += 1
 				when "SFUI_Notice_Target_Saved"
 					stats[map][:time_ran_out] += 1
+					stats[map][:ct_wins] += 1
 				when "SFUI_Notice_All_Hostages_Rescued"
 					stats[map][:hostage_rescued] += 1
+					stats[map][:ct_wins] += 1
 				when "SFUI_Notice_Hostages_Not_Rescued"
 					stats[map][:time_ran_out] += 1
+					stats[map][:t_wins] += 1
 				when "SFUI_Notice_Bomb_Defused"
 					stats[map][:bomb_defused] += 1
+					stats[map][:ct_wins] += 1
 				when "SFUI_Notice_Target_Bombed"
 					stats[map][:bomb_detonated] += 1
+					stats[map][:t_wins] += 1
 				else
 					p l
 					raise "unprocessed line"
