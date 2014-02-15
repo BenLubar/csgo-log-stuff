@@ -1,22 +1,5 @@
 require 'json'
 
-# an unquoted string
-string_inner = /((?:[^\\"]|\\[\\"])*)/
-
-# a quoted string
-string = /"#{string_inner}"/
-
-# a name-id-steam-team combo
-# served with a side of fries
-name = /"#{string_inner}<#{string_inner}><#{string_inner}><#{string_inner}>"/
-
-# a name-id-steam combo
-# hold the team
-name_1 = /"#{string_inner}<#{string_inner}><#{string_inner}>"/
-
-# an integer coordinate
-coord = /\[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\]/
-
 stats = {}
 
 map = ""
@@ -29,7 +12,7 @@ Dir['logs/*.log'].sort.each do |fn|
 
 		f.each_line do |l|
 			if l =~ /^L ([0-9]{2})\/([0-9]{2})\/([0-9]{4,}) - ([0-9]{2}):([0-9]{2}):([0-9]{2}): /
-				time = Time.new $3.to_i, $1.to_i, $2.to_i, $4.to_i, $5.to_i, $6.to_i
+				#time = Time.new $3.to_i, $1.to_i, $2.to_i, $4.to_i, $5.to_i, $6.to_i
 				l = l[$&.size..-1]
 			else
 				p l
@@ -41,37 +24,37 @@ Dir['logs/*.log'].sort.each do |fn|
 			end
 
 			case l
-			when /^Log file started \(file #{string}\) \(game #{string}\) \(version #{string}\)$/
+			when /^Log file started \(file "((?:[^\\"]|\\[\\"])*)"\) \(game "((?:[^\\"]|\\[\\"])*)"\) \(version "((?:[^\\"]|\\[\\"])*)"\)$/
 				# ignore
 			when /^Log file closed$/
 				# ignore
-			when /^Loading map #{string}$/
+			when /^Loading map "((?:[^\\"]|\\[\\"])*)"$/
 				map = $1.split('/').last
-			when /^Started map #{string} \(CRC #{string}\)$/
+			when /^Started map "((?:[^\\"]|\\[\\"])*)" \(CRC "((?:[^\\"]|\\[\\"])*)"\)$/
 				map = $1.split('/').last
 			when /^server cvars start$/
 				cvars = true
 			when /^server cvars end$/
 				cvars = false
-			when /^server_cvar: #{string} #{string}$/
+			when /^server_cvar: "((?:[^\\"]|\\[\\"])*)" "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
-			when /^server_message: #{string}$/
+			when /^server_message: "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
 			when /^Your server is out of date and will be shutdown during hibernation or changelevel, whichever comes first\.$/
 				# ignore
-			when /^#{name} entered the game$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" entered the game$/
 				# ignore
-			when /^#{name} connected, address #{string}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" connected, address "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
-			when /#{name} disconnected \(reason #{string}\)$/
+			when /"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" disconnected \(reason "((?:[^\\"]|\\[\\"])*)"\)$/
 				# ignore
-			when /^#{name_1} switched from team <#{string_inner}> to <#{string_inner}>$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" switched from team <((?:[^\\"]|\\[\\"])*)> to <((?:[^\\"]|\\[\\"])*)>$/
 				# ignore
-			when /^#{name} changed name to #{string}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" changed name to "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
-			when /^#{name} purchased #{string}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" purchased "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
-			when /^World triggered #{string}$/
+			when /^World triggered "((?:[^\\"]|\\[\\"])*)"$/
 				case event = $1
 				when "Game_Commencing"
 					# ignore
@@ -84,21 +67,21 @@ Dir['logs/*.log'].sort.each do |fn|
 					p l
 					raise "unprocessed line"
 				end
-			when /^World triggered "killlocation" \(attacker_position #{string}\) \(victim_position #{string}\)$/
+			when /^World triggered "killlocation" \(attacker_position "((?:[^\\"]|\\[\\"])*)"\) \(victim_position "((?:[^\\"]|\\[\\"])*)"\)$/
 				# ignore
-			when /^#{name} triggered "weaponstats2?" .*$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" triggered "weaponstats2?" .*$/
 				# ignore
 			when /^\[META\] .*$/
 				# ignore
-			when /^#{name} #{coord} attacked #{name} #{coord} with #{string} \(damage #{string}\) \(damage_armor #{string}\) \(health #{string}\) \(armor #{string}\) \(hitgroup #{string}\)$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\] attacked "((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\] with "((?:[^\\"]|\\[\\"])*)" \(damage "((?:[^\\"]|\\[\\"])*)"\) \(damage_armor "((?:[^\\"]|\\[\\"])*)"\) \(health "((?:[^\\"]|\\[\\"])*)"\) \(armor "((?:[^\\"]|\\[\\"])*)"\) \(hitgroup "((?:[^\\"]|\\[\\"])*)"\)$/
 				# ignore
-			when /^#{name} #{coord} committed suicide with #{string}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\] committed suicide with "((?:[^\\"]|\\[\\"])*)"$/
 				# ignore
-			when /^#{name} #{coord} killed #{name} #{coord} with #{string}( \(headshot\))?$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\] killed "((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\] with "((?:[^\\"]|\\[\\"])*)"( \(headshot\))?$/
 				# ignore
-			when /^#{name} assisted killing #{name}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" assisted killing "((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>"$/
 				# ignore
-			when /^#{name} triggered #{string}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" triggered "((?:[^\\"]|\\[\\"])*)"$/
 				case event = $5
 				when "headshot"
 					# ignore
@@ -122,7 +105,7 @@ Dir['logs/*.log'].sort.each do |fn|
 					p l
 					raise "unprocessed line"
 				end
-			when /^Team #{string} triggered #{string} \(CT #{string}\) \(T #{string}\)$/
+			when /^Team "((?:[^\\"]|\\[\\"])*)" triggered "((?:[^\\"]|\\[\\"])*)" \(CT "((?:[^\\"]|\\[\\"])*)"\) \(T "((?:[^\\"]|\\[\\"])*)"\)$/
 				stats[map] = {
 					ct_win: 0,
 					t_win: 0,
@@ -162,11 +145,11 @@ Dir['logs/*.log'].sort.each do |fn|
 					p l
 					raise "unprocessed line"
 				end
-			when /^Team #{string} scored #{string} with #{string} players$/
+			when /^Team "((?:[^\\"]|\\[\\"])*)" scored "((?:[^\\"]|\\[\\"])*)" with "((?:[^\\"]|\\[\\"])*)" players$/
 				# ignore
 			when /^Molotov projectile spawned at .*$/
 				# ignore
-			when /^#{name} threw (molotov|hegrenade|decoy|flashbang|smokegrenade) #{coord}$/
+			when /^"((?:[^\\"]|\\[\\"])*)<((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)><((?:[^\\"]|\\[\\"])*)>" threw (molotov|hegrenade|decoy|flashbang|smokegrenade) \[(-?[0-9]+) (-?[0-9]+) (-?[0-9]+)\]$/
 				# ignore
 			else
 				p l
