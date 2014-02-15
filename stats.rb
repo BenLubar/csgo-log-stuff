@@ -107,8 +107,8 @@ Dir['logs/*.log'].sort.each do |fn|
 				end
 			when /^Team "((?:[^\\"]|\\[\\"])*)" triggered "((?:[^\\"]|\\[\\"])*)" \(CT "((?:[^\\"]|\\[\\"])*)"\) \(T "((?:[^\\"]|\\[\\"])*)"\)$/
 				stats[map] = {
-					ct_win: 0,
-					t_win: 0,
+					all_ct_killed: 0,
+					all_t_killed: 0,
 					hostage_reached: 0,
 					hostage_rescued: 0,
 					bomb_planted: 0,
@@ -128,9 +128,9 @@ Dir['logs/*.log'].sort.each do |fn|
 
 				case event = $2
 				when "SFUI_Notice_CTs_Win"
-					stats[map][:ct_win] += 1
+					stats[map][:all_t_killed] += 1
 				when "SFUI_Notice_Terrorists_Win"
-					stats[map][:t_win] += 1
+					stats[map][:all_ct_killed] += 1
 				when "SFUI_Notice_Target_Saved"
 					stats[map][:time_ran_out] += 1
 				when "SFUI_Notice_All_Hostages_Rescued"
