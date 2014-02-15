@@ -67,6 +67,8 @@ Dir['logs/*.log'].sort.each do |fn|
 				# ignore
 			when /^#{name_1} switched from team <#{string_inner}> to <#{string_inner}>$/
 				# ignore
+			when /^#{name} changed name to #{string}$/
+				# ignore
 			when /^#{name} purchased #{string}$/
 				# ignore
 			when /^World triggered #{string}$/
