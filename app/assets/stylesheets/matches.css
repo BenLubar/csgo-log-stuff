@@ -1,0 +1,23 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+.match-header, .match-table {
+	font-family: sans-serif;
+	text-align: center;
+}
+
+.match-header {
+	background: #ddd;
+	color: #000;
+}
+
+.match-header a, .match-table a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.match-table th[rowspan="2"] {
+	font-size: 2em;
+}

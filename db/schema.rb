@@ -11,26 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140216194813) do
+ActiveRecord::Schema.define(version: 20140216205102) do
+
+  create_table "bots", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "matches", force: true do |t|
     t.datetime "start",      null: false
     t.string   "map",        null: false
-    t.string   "t1p1"
-    t.string   "t1p2"
-    t.string   "t1p3"
-    t.string   "t1p4"
-    t.string   "t1p5"
-    t.string   "t2p1"
-    t.string   "t2p2"
-    t.string   "t2p3"
-    t.string   "t2p4"
-    t.string   "t2p5"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "matches", ["map"], name: "index_matches_on_map"
+
+  create_table "players", force: true do |t|
+    t.boolean  "first_team"
+    t.integer  "match_id"
+    t.integer  "bot_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "players", ["bot_id"], name: "index_players_on_bot_id"
+  add_index "players", ["match_id"], name: "index_players_on_match_id"
 
   create_table "rounds", force: true do |t|
     t.datetime "start",                       null: false

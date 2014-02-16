@@ -90,4 +90,5 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   rails (~> 4.0.2)
   sdoc
+  sprockets
   sqlite3

@@ -20,8 +20,6 @@ Dir['logs/*.log'].sort.each do |fn|
     hostage_reached = false
 
     f.each_line do |l|
-      puts l
-
       if l =~ /^L ([0-9]{2})\/([0-9]{2})\/([0-9]{4,}) - ([0-9]{2}):([0-9]{2}):([0-9]{2}): /
         time = "#{$3}-#{$1}-#{$2} #{$4}:#{$5}:#{$6}"
         l = l[$&.size..-1]
@@ -45,6 +43,7 @@ Dir['logs/*.log'].sort.each do |fn|
       when /^Started map "((?:[^\\"]|\\[\\"])*)" \(CRC "((?:[^\\"]|\\[\\"])*)"\)$/
         map = $1.split('/').last
         round = -2
+	match.destroy! if match and match.rounds.empty?
         match = Match.create! start: time, map: map
         match_t1p = 1
         match_t2p = 1
@@ -70,12 +69,12 @@ Dir['logs/*.log'].sort.each do |fn|
           case $5
           when "TERRORIST"
             unless match_t1p > 5
-              match.update! :"t1p#{match_t1p}" => $1
+              Player.create! first_team: true, match: match, bot: Bot.find_or_create_by!(name: $1)
               match_t1p += 1
             end
           when "CT"
             unless match_t2p > 5
-              match.update! :"t2p#{match_t2p}" => $1
+              Player.create! first_team: false, match: match, bot: Bot.find_or_create_by!(name: $1)
               match_t2p += 1
             end
           end
@@ -180,4 +179,5 @@ Dir['logs/*.log'].sort.each do |fn|
       end
     end
   end
+  puts "Processed: #{fn}"
 end
