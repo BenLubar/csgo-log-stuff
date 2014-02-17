@@ -1,4 +1,5 @@
 class Match < ActiveRecord::Base
+  belongs_to :map
   has_many :rounds
   has_many :players
 

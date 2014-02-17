@@ -38,13 +38,12 @@ Dir['logs/*.log'].sort.each do |fn|
       when /^Log file closed$/
         # ignore
       when /^Loading map "((?:[^\\"]|\\[\\"])*)"$/
-        map = $1.split('/').last
-        round = -2
+        # ignore
       when /^Started map "((?:[^\\"]|\\[\\"])*)" \(CRC "((?:[^\\"]|\\[\\"])*)"\)$/
         map = $1.split('/').last
         round = -2
 	match.destroy! if match and match.rounds.empty?
-        match = Match.create! start: time, map: map
+        match = Match.create! start: time, map: Map.find_or_create_by!(name: map, path: $1)
         match_t1p = 1
         match_t2p = 1
       when /^server cvars start$/

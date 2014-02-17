@@ -1,0 +1,10 @@
+<table>
+<tbody>
+<% @maps.each do |map| %>
+<tr>
+	<th><%= link_to map.name, map %></th>
+	<td><%= map.matches.size %> games</td>
+</tr>
+<% end %>
+</tbody>
+</table>

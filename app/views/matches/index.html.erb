@@ -10,7 +10,7 @@ score_2 = match.t2_scores
 
 %>
 <tr id="match-<%= match.id %>" class="match-header">
-	<th colspan="2"><%= link_to match.map, match %></th>
+	<th colspan="2"><%= link_to match.map.name, match.map %></th>
 	<th colspan="5"><%= time_ago_in_words match.start %> ago</th>
 	<th colspan="5"><%= distance_of_time_in_words match.start, match.rounds.last.end %> long</th>
 </tr>

@@ -1,5 +1,8 @@
 Csgo::Application.routes.draw do
+  root 'matches#index'
+
   resources :matches
+  resources :maps
   resources :bots
 
   # The priority is based upon order of creation: first created -> highest priority.

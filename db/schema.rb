@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140216205102) do
+ActiveRecord::Schema.define(version: 20140216230315) do
 
   create_table "bots", force: true do |t|
     t.string   "name"
@@ -19,14 +19,23 @@ ActiveRecord::Schema.define(version: 20140216205102) do
     t.datetime "updated_at"
   end
 
-  create_table "matches", force: true do |t|
-    t.datetime "start",      null: false
-    t.string   "map",        null: false
+  create_table "maps", force: true do |t|
+    t.string   "name"
+    t.string   "path"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "matches", ["map"], name: "index_matches_on_map"
+  add_index "maps", ["name"], name: "index_maps_on_name"
+
+  create_table "matches", force: true do |t|
+    t.datetime "start",      null: false
+    t.integer  "map_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "matches", ["map_id"], name: "index_matches_on_map_id"
 
   create_table "players", force: true do |t|
     t.boolean  "first_team"
