@@ -5,11 +5,13 @@ class MapsController < ApplicationController
   # GET /maps.json
   def index
     @maps = Map.order(name: :asc)
+    @title = 'Maps'
   end
 
   # GET /maps/1
   # GET /maps/1.json
   def show
+    @title = "#{@map.name} | Maps"
   end
 
   private

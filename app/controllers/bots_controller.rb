@@ -4,12 +4,14 @@ class BotsController < ApplicationController
   # GET /bots
   # GET /bots.json
   def index
-    @bots = Bot.all
+    @bots = Bot.order(name: :asc)
+    @title = 'Bots'
   end
 
   # GET /bots/1
   # GET /bots/1.json
   def show
+    @title = "#{@bot.name} | Bots"
   end
 
   private

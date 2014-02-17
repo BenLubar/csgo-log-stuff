@@ -5,11 +5,13 @@ class MatchesController < ApplicationController
   # GET /matches.json
   def index
     @matches = Match.order(start: :desc)
+    @title = 'Matches'
   end
 
   # GET /matches/1
   # GET /matches/1.json
   def show
+    @title = "Match #{@match.id}: #{@match.map.name}"
   end
 
   private
