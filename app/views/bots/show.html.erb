@@ -1,1 +1,5 @@
 <h1><%= @bot.name %></h1>
+
+<% @bot.matches.each do |match| %>
+<a href="<%= url_for match %>"><img src="<%= match.map.workshop['preview_url'] %>160x90.resizedimage"></a>
+<% end %>

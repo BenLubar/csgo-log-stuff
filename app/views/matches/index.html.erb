@@ -3,6 +3,7 @@
 <% @matches.each do |match| %>
 <%
 
+workshop = match.map.workshop
 team_1 = match.team_1
 team_2 = match.team_2
 score_1 = match.t1_scores
@@ -10,29 +11,32 @@ score_2 = match.t2_scores
 
 %>
 <tr id="match-<%= match.id %>" class="match-header">
-	<th colspan="2"><%= link_to match.map.name, match.map %></th>
-	<th colspan="5"><%= time_ago_in_words match.start %> ago</th>
-	<th colspan="5"><%= distance_of_time_in_words match.start, match.rounds.last.end %> long</th>
+	<th colspan="3" class="match-map"><%= link_to match.map.name, match.map %></th>
+	<th colspan="5" class="match-age"><%= time_ago_in_words match.start %> ago</th>
+	<th colspan="5" class="match-duration"><%= distance_of_time_in_words match.start, match.rounds.last.end %> long</th>
 </tr>
 <tr class="match-table">
-	<th rowspan="2"><%= link_to score_1[0] + score_1[1], match %></th>
-	<th><%= link_to score_1[0], match %></th>
+	<th rowspan="4" class="match-image"><% if workshop %>
+		<img src="<%= workshop['preview_url'] %>160x90.resizedimage">
+	<% end %></th>
+	<th rowspan="2" class="match-score match-team1 match-score-total"><%= link_to score_1[0] + score_1[1], match %></th>
+	<th class="match-score match-team1 match-half1"><%= link_to score_1[0], match %></th>
 	<% team_1.each do |p| %>
-		<td colspan="2" rowspan="2"><%= link_to p.bot.name, p.bot %></td>
+		<td colspan="2" rowspan="2" class="match-player match-team1"><%= link_to p.bot.name, p.bot %></td>
 	<% end %>
 </tr>
 <tr class="match-table">
-	<th><%= link_to score_1[1], match %></th>
+	<th class="match-score match-team1 match-half2"><%= link_to score_1[1], match %></th>
 </tr>
 <tr class="match-table">
-	<th rowspan="2"><%= link_to score_2[0] + score_2[1], match %></th>
-	<th><%= link_to score_2[0], match %></th>
+	<th rowspan="2" class="match-score match-team2 match-score-total"><%= link_to score_2[0] + score_2[1], match %></th>
+	<th class="match-score match-team2 match-half1"><%= link_to score_2[0], match %></th>
 	<% team_2.each do |p| %>
-		<td colspan="2" rowspan="2"><%= link_to p.bot.name, p.bot %></td>
+		<td colspan="2" rowspan="2" class="match-player match-team2"><%= link_to p.bot.name, p.bot %></td>
 	<% end %>
 </tr>
 <tr class="match-table">
-	<th><%= link_to score_2[1], match %></th>
+	<th class="match-score match-team2 match-half2"><%= link_to score_2[1], match %></th>
 </tr>
 <% end %>
 </tbody>

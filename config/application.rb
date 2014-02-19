@@ -27,5 +27,7 @@ module Csgo
 
     # Disable the asset pipeline.
     config.assets.enabled = false
+
+    config.assets.prefix = '/csgo/assets'
   end
 end

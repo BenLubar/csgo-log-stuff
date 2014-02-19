@@ -1,9 +1,11 @@
 Csgo::Application.routes.draw do
-  root 'matches#index'
+  scope(path: '/csgo') do
+    root 'matches#index'
 
-  resources :matches
-  resources :maps
-  resources :bots
+    resources :matches
+    resources :maps
+    resources :bots
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -3,15 +3,10 @@
   They will automatically be included in application.css.
 */
 
-iframe {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	width: 100%;
-	height: 100vh;
-	overflow: hidden;
+.pull-right {
+	float: right;
+}
+
+pre {
+	white-space: pre-wrap;
 }

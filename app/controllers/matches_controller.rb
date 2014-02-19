@@ -6,12 +6,14 @@ class MatchesController < ApplicationController
   def index
     @matches = Match.order(start: :desc)
     @title = 'Matches'
+    @page_class = 'matches'
   end
 
   # GET /matches/1
   # GET /matches/1.json
   def show
     @title = "Match #{@match.id}: #{@match.map.name}"
+    @page_class = "matches-#{@match.id}"
   end
 
   private

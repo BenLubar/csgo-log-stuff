@@ -1,0 +1,18 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+html[class^="page-bots-"] {
+	background-size: cover;
+	min-height: 100%;
+}
+
+.page-bots-Chet {
+	background-image: url(http://i.imgur.com/ik1HXAN.jpg);
+}
+
+.page-bots-Gabe {
+	background-image: url(http://i.imgur.com/TlZ2ZBs.jpg);
+}
+

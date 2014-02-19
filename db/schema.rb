@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140216230315) do
+ActiveRecord::Schema.define(version: 20140217040627) do
 
   create_table "bots", force: true do |t|
     t.string   "name"
@@ -69,5 +69,14 @@ ActiveRecord::Schema.define(version: 20140216230315) do
 
   add_index "rounds", ["match_id", "round"], name: "index_rounds_on_match_id_and_round", unique: true
   add_index "rounds", ["match_id"], name: "index_rounds_on_match_id"
+
+  create_table "workshop_caches", force: true do |t|
+    t.string   "fileid"
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workshop_caches", ["fileid"], name: "index_workshop_caches_on_fileid", unique: true
 
 end

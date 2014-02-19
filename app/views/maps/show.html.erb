@@ -1,5 +1,24 @@
+<% if @workshop %>
+
+<img src="<%= @workshop['preview_url'] %>400x225.resizedimage" class="pull-right">
+<h1><%= @workshop['title'] %></h1>
+<pre><%= @workshop['description'] %></pre>
+<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=<%= @workshop['publishedfileid'] %>">Steam Workshop</a></iframe>
+
+<% else %>
+
 <h1><%= @map.name %></h1>
-<% case @map.path %>
-<% when /\Aworkshop\/([0-9]+)\/#{@map.name}\z/ %>
-<iframe src="https://steamcommunity.com/sharedfiles/filedetails/?id=<%= $1 %>#highlight_player_area"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=<%= $1 %>">Steam Workshop</a></iframe>
+No workshop data
+
 <% end %>
+
+<%
+
+t_wins = @map.rounds.where(t_wins: 1).count
+ct_wins = @map.rounds.where(ct_wins: 1).count
+
+%>
+<p>
+Terrorist wins: <%= t_wins %>
+<br>
+Counter-Terrorist wins: <%= ct_wins %>
