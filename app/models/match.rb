@@ -14,18 +14,18 @@ class Match < ActiveRecord::Base
   has_many :t2_ct_rounds, -> { where(round: 1..15, ct_wins: 1) }, class_name: 'Round'
 
   def t1_scores
-    [t1_t_rounds.count, t1_ct_rounds.count]
+    [t1_t_rounds.to_a.size, t1_ct_rounds.to_a.size]
   end
 
   def t2_scores
-    [t2_ct_rounds.count, t2_t_rounds.count]
+    [t2_ct_rounds.to_a.size, t2_t_rounds.to_a.size]
   end
 
   def t_scores
-    [t1_t_rounds.count, t2_t_rounds.count]
+    [t1_t_rounds.to_a.size, t2_t_rounds.to_a.size]
   end
 
   def ct_scores
-    [t2_ct_rounds.count, t1_ct_rounds.count]
+    [t2_ct_rounds.to_a.size, t1_ct_rounds.to_a.size]
   end
 end
