@@ -5,6 +5,12 @@ class MatchesController < ApplicationController
   # GET /matches.json
   def index
     @matches = Match.order(start: :desc)
+    workshop_ids = []
+    @matches.find_each do |m|
+      workshop_ids << m.map.workshop_id
+    end
+    workshop_ids.uniq!
+    @workshop = WorkshopCache.item *workshop_ids
     @title = 'Matches'
     @page_class = 'matches'
   end

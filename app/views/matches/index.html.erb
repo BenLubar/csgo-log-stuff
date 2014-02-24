@@ -3,7 +3,7 @@
 <% @matches.each do |match| %>
 <%
 
-workshop = match.map.workshop
+workshop = @workshop[match.map.workshop_id]
 team_1 = match.team_1
 team_2 = match.team_2
 score_1 = match.t1_scores
